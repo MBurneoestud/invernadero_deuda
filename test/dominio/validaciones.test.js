@@ -268,3 +268,45 @@ describe("esIdValido", () => {
     }
   });
 });
+
+describe("validarRiego y esIdValido (spec 08)", () => {
+  const AHORA = new Date(2026, 10, 18, 0, 1);
+  const ID = "665f1c2a9b1e8a0012345678";
+
+  const detallePlanta = (planta) =>
+    validarRiego({ planta, cantidadMl: 500 }, AHORA).find(
+      (d) => d.campo === "planta",
+    );
+
+  test("CA-08.2 y CA-08.4: un id válido no da error y los mensajes no cambian", () => {
+    assert.equal(detallePlanta(ID), undefined);
+    assert.equal(
+      detallePlanta("123")?.mensaje,
+      "La planta no tiene un identificador válido",
+    );
+    assert.equal(detallePlanta("   ")?.mensaje, "La planta es obligatoria");
+  });
+
+  test("CA-08.3: rechaza la planta exactamente cuando esIdValido es falso", () => {
+    for (const planta of [
+      undefined,
+      null,
+      "",
+      "   ",
+      "123",
+      "665f1c2a9b1e8a001234567z",
+      "665f1c2a9b1e8a00123456789",
+      " 665f1c2a9b1e8a0012345678",
+      123,
+      { $gt: "" },
+      "665F1C2A9B1E8A0012345678",
+      ID,
+    ]) {
+      assert.equal(
+        detallePlanta(planta) !== undefined,
+        !esIdValido(planta),
+        `${JSON.stringify(planta)}`,
+      );
+    }
+  });
+});

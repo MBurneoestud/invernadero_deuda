@@ -3,7 +3,7 @@
 Archivo de carga para la skill `/tablero`. Cada tarjeta empieza con `## ` y una línea `Lista:`. En «Por hacer», el orden es la prioridad.
 
 ## Spec 08 · Unificar la validación de identificadores
-Lista: Por hacer
+Lista: Hecho
 
 - **Historia:** HU-1.2 · Registrar un riego. **Deuda:** D-1 (`docs/deuda-tecnica.md`).
 - **Objetivo:** el formato de un identificador de MongoDB se define en un solo sitio de `src/`: `validarIdPlanta` usa `esIdValido` en lugar de su propia expresión regular.

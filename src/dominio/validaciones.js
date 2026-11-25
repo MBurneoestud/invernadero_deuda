@@ -39,17 +39,23 @@ function validarPlanta(datos) {
   return detalles;
 }
 
+// Identificador de MongoDB: 24 caracteres hexadecimales.
+// Única definición del formato de un id en src/.
+const ID_VALIDO = /^[0-9a-f]{24}$/i;
+
+function esIdValido(valor) {
+  return typeof valor === "string" && ID_VALIDO.test(valor);
+}
+
 // --- Riego ---
 // Los mensajes coinciden con los del modelo Riego. La regla «no anterior al registro
 // de la planta» necesita la base de datos y se comprueba en la ruta.
-
-const ID_PLANTA = /^[0-9a-f]{24}$/i;
 
 function validarIdPlanta(valor) {
   if (valor === undefined || valor === null || esTextoVacioSiEsTexto(valor)) {
     return "La planta es obligatoria";
   }
-  if (typeof valor !== "string" || !ID_PLANTA.test(valor)) {
+  if (!esIdValido(valor)) {
     return "La planta no tiene un identificador válido";
   }
   return null;
@@ -105,13 +111,6 @@ function validarRiego(datos, ahora) {
     if (mensaje) detalles.push({ campo, mensaje });
   }
   return detalles;
-}
-
-// Identificador de MongoDB: 24 caracteres hexadecimales.
-const ID_VALIDO = /^[0-9a-f]{24}$/i;
-
-function esIdValido(valor) {
-  return typeof valor === "string" && ID_VALIDO.test(valor);
 }
 
 module.exports = { validarPlanta, validarRiego, esIdValido };
